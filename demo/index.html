@@ -5,6 +5,9 @@
   <style>
     body {
       background: #fafafa;
+      --oui-alert-text-color: black;
+      --oui-alert-bg-color: #d3e8f8;
+      --oui-alert-border-color: #3395e1;
     }
   </style>
 </head>
@@ -15,13 +18,8 @@
     import { html, render } from 'lit';
     import '../dist/src/oui-alert.js';
 
-    const title = 'Hello owc World!';
     render(
-      html`
-        <oui-alert .title=${title}>
-          some light-dom
-        </oui-alert>
-      `,
+      html`<oui-alert>An alert.</oui-alert>`,
       document.querySelector('#demo')
     );
   </script>

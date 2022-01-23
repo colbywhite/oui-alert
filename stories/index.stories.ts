@@ -5,56 +5,42 @@ export default {
   title: 'OuiAlert',
   component: 'oui-alert',
   argTypes: {
-    title: { control: 'text' },
-    counter: { control: 'number' },
     textColor: { control: 'color' },
+    bgColor: { control: 'color' },
+    borderColor: { control: 'color' },
   },
 };
 
 interface Story<T> {
-  (args: T): TemplateResult;
   args?: Partial<T>;
   argTypes?: Record<string, unknown>;
+
+  (args: T): TemplateResult;
 }
 
 interface ArgTypes {
-  title?: string;
-  counter?: number;
   textColor?: string;
+  bgColor?: string;
+  borderColor?: string;
   slot?: TemplateResult;
 }
 
 const Template: Story<ArgTypes> = ({
-  title = 'Hello world',
-  counter = 5,
-  textColor,
-  slot,
-}: ArgTypes) => html`
-  <oui-alert
-    style="--oui-alert-text-color: ${textColor || 'black'}"
-    .title=${title}
-    .counter=${counter}
-  >
-    ${slot}
-  </oui-alert>
+  slot = html`<p>Slotted content</p>`,
+  textColor = 'black',
+  bgColor = '#d3e8f8',
+  borderColor = '#3395e1',
+}: ArgTypes) => {
+  const styles = `
+  --oui-alert-text-color: ${textColor};
+  --oui-alert-bg-color: ${bgColor};
+  --oui-alert-border-color: ${borderColor};
 `;
-
-export const Regular = Template.bind({});
-
-export const CustomTitle = Template.bind({});
-CustomTitle.args = {
-  title: 'My title',
+  return html`
+    <oui-alert style="${styles}">
+      ${slot}
+    </oui-alert>
+  `;
 };
 
-export const CustomCounter = Template.bind({});
-CustomCounter.args = {
-  counter: 123456,
-};
-
-export const SlottedContent = Template.bind({});
-SlottedContent.args = {
-  slot: html`<p>Slotted content</p>`,
-};
-SlottedContent.argTypes = {
-  slot: { table: { disable: true } },
-};
+export const Default = Template.bind({});

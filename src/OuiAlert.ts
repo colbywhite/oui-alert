@@ -1,27 +1,20 @@
 import { css, html, LitElement } from 'lit';
-import { property } from 'lit/decorators.js';
 
 export class OuiAlert extends LitElement {
   static styles = css`
     :host {
       display: block;
-      padding: 25px;
+      background-color: var(--oui-alert-bg-color, #fff);
       color: var(--oui-alert-text-color, #000);
+      border: 1px solid var(--oui-alert-border-color, #444);
     }
   `;
 
-  @property({ type: String }) title = 'Hey there';
-
-  @property({ type: Number }) counter = 5;
-
-  __increment() {
-    this.counter += 1;
-  }
-
   render() {
     return html`
-      <h2>${this.title} Nr. ${this.counter}!</h2>
-      <button @click="${this.__increment}">increment</button>
+      <div role="alert">
+        <slot></slot>
+      </div>
     `;
   }
 }
