@@ -30,7 +30,7 @@ type ArgTypes = Partial<{
   dialogLabel: string;
   dialogLabelledBy: string;
   slot: TemplateResult;
-}>
+}>;
 
 const Template: Story<ArgTypes> = ({
   slot = html`<p>Slotted content</p>`,
