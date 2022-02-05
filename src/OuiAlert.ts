@@ -1,5 +1,7 @@
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { choose } from 'lit/directives/choose.js';
 
 export class OuiAlert extends LitElement {
   static styles = css`
@@ -17,29 +19,24 @@ export class OuiAlert extends LitElement {
 
   @property({ type: String }) dialogLabelledBy?: string = undefined;
 
+  /**
+   * @private
+   * @see choose
+   */
+  private readonly roleCases: Array<[boolean, () => string]> = [
+    [false, () => 'alert'],
+    [true, () => 'alertdialog'],
+  ];
+
   render() {
-    if (!this.dialog) {
-      return html`
-        <div role='alert'>
-          <slot></slot>
-        </div>
-      `;
-    }
-    if (this.dialogLabel !== undefined) {
-      return html`
-        <div role="alertdialog" aria-label="${this.dialogLabel}">
-          <slot></slot>
-        </div>
-      `;
-    }
-    if (this.dialogLabelledBy !== undefined) {
-      return html`
-        <div role="alertdialog" aria-labelledBy="${this.dialogLabelledBy}">
-          <slot></slot>
-        </div>
-      `;
-    }
-    console.warn('oui-alert is missing a dialog label');
-    return nothing;
+    return html`
+      <div
+        role=${choose(this.dialog, this.roleCases)}
+        aria-label=${ifDefined(this.dialogLabel)}
+        aria-labelledBy=${ifDefined(this.dialogLabelledBy)}
+      >
+        <slot></slot>
+      </div>
+    `;
   }
 }
