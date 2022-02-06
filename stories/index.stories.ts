@@ -1,4 +1,4 @@
-import { html, TemplateResult } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
 import '../src/oui-alert.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -9,9 +9,6 @@ export default {
     dialog: { control: 'boolean' },
     dialogLabel: { control: 'text' },
     dialogLabelledBy: { control: 'text' },
-    textColor: { control: 'color' },
-    bgColor: { control: 'color' },
-    borderColor: { control: 'color' },
   },
 };
 
@@ -23,41 +20,40 @@ interface Story<T> {
 }
 
 type ArgTypes = Partial<{
-  textColor: string;
-  bgColor: string;
-  borderColor: string;
   dialog: boolean;
   dialogLabel: string;
   dialogLabelledBy: string;
-  slot: TemplateResult;
 }>;
 
 const Template: Story<ArgTypes> = ({
-  slot = html`<p>Slotted content</p>`,
   dialog = false,
   dialogLabel = undefined,
   dialogLabelledBy = undefined,
-  textColor = 'black',
-  bgColor = '#d3e8f8',
-  borderColor = '#3395e1',
-}: ArgTypes) => {
-  const styles = `
-  --oui-alert-text-color: ${textColor};
-  --oui-alert-bg-color: ${bgColor};
-  --oui-alert-border-color: ${borderColor};
-`;
-  return html`
+}: ArgTypes) =>
+  html`
+    <style>
+      oui-alert::part(container) {
+        color: black;
+        background-color: #d3e8f8;
+        border: 1px solid #3395e1;
+      }
+    </style>
+    ${dialogLabelledBy
+      ? html`<p id="${ifDefined(dialogLabelledBy)}">
+          LabelledBy element goes here.
+        </p>`
+      : nothing}
     <oui-alert
-      style=${styles}
-      ?dialog=${dialog}
-      dialogLabel=${ifDefined(dialogLabel)}
-      dialogLabelledBy=${ifDefined(dialogLabelledBy)}
+      ?dialog="${dialog}"
+      dialogLabel="${ifDefined(dialogLabel)}"
+      dialogLabelledBy="${ifDefined(dialogLabelledBy)}"
     >
-      ${slot}
+      <p>Slotted content goes here.</p>
     </oui-alert>
   `;
-};
 
 export const Default = Template.bind({});
-export const Dialog = Template.bind({});
-Dialog.args = { dialog: true, dialogLabel: 'Label' };
+export const DialogLabel = Template.bind({});
+DialogLabel.args = { dialog: true, dialogLabel: 'Label' };
+export const DialogLabelledBy = Template.bind({});
+DialogLabelledBy.args = { dialog: true, dialogLabelledBy: 'LabelledBy' };
