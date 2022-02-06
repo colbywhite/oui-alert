@@ -7,9 +7,6 @@ export class OuiAlert extends LitElement {
   static styles = css`
     :host {
       display: block;
-      background-color: var(--oui-alert-bg-color, #fff);
-      color: var(--oui-alert-text-color, #000);
-      border: 1px solid var(--oui-alert-border-color, #444);
     }
   `;
 
@@ -31,6 +28,7 @@ export class OuiAlert extends LitElement {
   render() {
     return html`
       <div
+        part='container'
         role=${choose(this.dialog, this.roleCases)}
         aria-label=${ifDefined(this.dialogLabel)}
         aria-labelledBy=${ifDefined(this.dialogLabelledBy)}
